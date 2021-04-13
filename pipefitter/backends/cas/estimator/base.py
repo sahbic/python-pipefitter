@@ -118,9 +118,11 @@ def create_output_table(self, conn, prefix='', caslib=None, replace=True):
     name = ('%s%s' % (prefix, uuid.uuid4())).replace('-', '_')
 
     if caslib:
-        return conn.CASTable(name, caslib=caslib, replace=replace)
+        conn.table.dropTable(name=name, caslib=caslib, quiet="True")
+        return conn.CASTable(name, caslib=caslib, promote=True)
 
-    return conn.CASTable(name, replace=replace)
+    conn.table.dropTable(name=name, quiet="True")
+    return conn.CASTable(name, promote=True)
 
 
 def merge_dicts(d1, d2):
